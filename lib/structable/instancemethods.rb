@@ -1,3 +1,5 @@
+require 'forwardable'
+
 module Structable::InstanceMethods
   extend Forwardable
 
