@@ -1,6 +1,8 @@
 = Structable
 
 * http://github.com/kachick/structable
+* http://rubygems.org/gems/structable
+* http://rubyforge.org/projects/structable
 
 == Description
 
@@ -12,12 +14,12 @@ Get Struct like APIs in your class.
 * Member aliasing
 * Inheritable
 
-* Note:
+== Note
 
 This library forked from below projects.
 
-  * https://github.com/kachick/structus
-  * https://github.com/kachick/striuct
+* https://github.com/kachick/structus
+* https://github.com/kachick/striuct
 
 == Usage
 
