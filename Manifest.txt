@@ -1,0 +1,12 @@
+README.rdoc
+LICENSE
+History.rdoc
+Manifest.txt
+Rakefile
+lib/structable.rb
+lib/structable/classmethods.rb
+lib/structable/instancemethods.rb
+lib/structable/version.rb
+test/test_helper.rb
+test/test_structable.rb
+example/example.rb

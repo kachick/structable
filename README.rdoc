@@ -1,0 +1,66 @@
+= Structable
+
+* http://github.com/kachick/structable
+
+== Description
+
+Get Struct like APIs in your class.
+
+== Features
+
+* API looks Ruby's Struct
+* Member aliasing
+* Inheritable
+
+* Note:
+
+This library forked from below projects.
+
+  * https://github.com/kachick/structus
+  * https://github.com/kachick/striuct
+
+== Usage
+
+* Setup
+
+    require 'structable'
+
+* Overview
+
+    class Drink
+      include Structable
+
+      member :taste
+    end
+    
+    class Tea < Drink
+      member :leaf
+      alias_member :type, :leaf
+    end
+
+    tea = Tea.new :bitter, :green
+    tea.members                          #=> [:taste, :leaf]
+    tea.members(true)                    #=> [:taste, :leaf, :type]
+    tea.member? :type                    #=> true
+    tea.type = 'Special Flavor'
+    tea.taste                            #=> :bitter
+    tea.leaf                             #=> 'Special Flavor'
+
+== Requirements
+
+* Ruby 1.9.2 or later
+  
+  tested release versions
+
+  * 1.9.3-p125
+  * 1.9.2-p290
+
+== Installation
+
+* gem install structable
+
+== License
+
+Copyright (C) 2011-2012  Kenichi Kamiya
+
+The MIT/X11 License (See the file LICENSE.)
