@@ -14,13 +14,6 @@ Get Struct like APIs in your class.
 * Member aliasing
 * Inheritable
 
-== Note
-
-This library forked from below projects.
-
-* https://github.com/kachick/structus
-* https://github.com/kachick/striuct
-
 == Usage
 
 * Setup
@@ -60,6 +53,13 @@ This library forked from below projects.
 == Installation
 
 * gem install structable
+
+== Note
+
+This library forked from below projects.
+
+* https://github.com/kachick/structus
+* https://github.com/kachick/striuct
 
 == License
 
