@@ -7,13 +7,17 @@ module Structable
     extend Forwardable
 
     def_delegators :'self.class',
-    :members, :keys, :length, :size,
-    :has_member?, :member?, :has_key?, :key?, :_attrs
+      :members, :keys, :length, :size,
+      :has_member?, :member?, :has_key?, :key?, :_attrs
 
     private :_attrs
     
     def_delegators :@_db, :hash, :has_value?, :value?, :empty?
 
+    # @yield [name]
+    # @yieldparam [Symbol] name
+    # @yieldreturn [self]
+    # @return [Enumerator]
     def each_member(&block)
       return to_enum(__method__) unless block_given?
       self.class.each_member(&block)
@@ -27,6 +31,7 @@ module Structable
       _replace_values(*values)
     end
 
+    # @return [Array]
     def values
       members.map{|name|@_db[name]}
     end
@@ -69,6 +74,7 @@ module Structable
 
     alias_method :to_a, :values
 
+    # @param [Boolean] reject_no_assign
     # @return [Hash]
     def to_h(reject_no_assign=false)
       return @_db.dup if reject_no_assign
@@ -112,11 +118,15 @@ module Structable
       _subscript(key) {|name|_set! name, value}
     end
 
+    # @return [self]
     def freeze
       close
       super
     end
 
+    # @yield [value]
+    # @yieldreturn [self]
+    # @return [Enumerator]
     def each_value
       return to_enum(__method__) unless block_given?
       each_member{|name|yield self[name]}
@@ -124,6 +134,10 @@ module Structable
 
     alias_method :each, :each_value
 
+    # @yield [name, value]
+    # @yieldparam [Symbol] name
+    # @yieldreturn [self]
+    # @return [Enumerator]
     def each_pair
       return to_enum(__method__) unless block_given?
       each_member{|name|yield name, self[name]}
