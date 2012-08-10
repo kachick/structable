@@ -5,7 +5,18 @@ module Structable
   module ClassMethods
 
     extend Forwardable
+    
+    # @return [Integer]
+    def length
+      _attrs.length
+    end
 
+    alias_method :size, :length
+
+    # @yield [name]
+    # @yieldparam [Symbol] name
+    # @yieldreturn [self]
+    # @return [Enumerator]
     def each_member(&block)      
       return to_enum(__method__) unless block_given?
       _attrs.each_key(&block)
@@ -13,19 +24,16 @@ module Structable
     end
     
     alias_method :each_key, :each_member
-
+  
+    # @param [Boolean] aliased
+    # @return [Array<Symbol>]
     def members(aliased=false)
       (aliased ? _attrs : _attrs.select{|k, v|v.respond_to? :each_pair}).keys
     end
 
     alias_method :keys, :members
 
-    def length
-      _attrs.length
-    end
-
-    alias_method :size, :length
-
+    # @param [Symbol, String] name
     def has_member?(name)
       _attrs.has_key? name
     end
@@ -34,6 +42,7 @@ module Structable
     alias_method :has_key?, :has_member?
     alias_method :key?, :has_member?
 
+    # @return [self] to be accessible via other name
     def alias_member(aliased, original)
       _attrs[aliased] = original
      (_attrs(original)[:aliases] ||= []) << aliased
@@ -42,12 +51,8 @@ module Structable
       alias_method :"#{aliased}=", :"#{original}="
     end
 
-    def freeze
-      close
-      super
-    end
-
-    # @param [Symbol, String, #to_str] name
+    # @param [Symbol, String] name
+    # @return [Symbol] identifier symbol
     def autonym(name)
       name = name.to_sym
       if _attrs.has_key? name
@@ -62,6 +67,7 @@ module Structable
     def_delegator :self, :new, :[]
     
     # @param [#each_pair, #keys] pairs ex: Hash, Struct
+    # @return [ClassMethods] new instance
     def load_pairs(pairs)
       unless pairs.respond_to?(:each_pair) and pairs.respond_to?(:keys)
         raise TypeError, 'no pairs object'
@@ -77,9 +83,17 @@ module Structable
     end
 
     # @endgroup
+    
+    # @return [self] 
+    def freeze
+      close
+      super
+    end
 
     private
     
+    # @param [Symbol, String] name
+    # @return [nil]
     def member(name)
       name = name.to_sym
       raise NameError, 'Already defined' if _attrs.has_key? name
