@@ -10,4 +10,4 @@ lib/structable/singletonclass.rb
 lib/structable/version.rb
 test/test_helper.rb
 test/test_structable.rb
-example/example.rb
+examples/example.rb
