@@ -1,12 +1,11 @@
 = Structable
 
-* http://github.com/kachick/structable
-* http://rubygems.org/gems/structable
-* http://rubyforge.org/projects/structable
+code :: https://github.com/kachick/structable
+bugs :: https://github.com/kachick/structable/issues
 
 == Description
 
-Get Struct like APIs in your class.
+Provide APIs looks like "Struct"
 
 == Features
 
@@ -16,11 +15,11 @@ Get Struct like APIs in your class.
 
 == Usage
 
-* Setup
+=== Setup
 
     require 'structable'
 
-* Overview
+=== Overview
 
     class Drink
       include Structable
@@ -44,25 +43,16 @@ Get Struct like APIs in your class.
 == Requirements
 
 * Ruby 1.9.2 or later
-  
-  tested release versions
-
-  * 1.9.3-p125
-  * 1.9.2-p290
 
 == Installation
 
 * gem install structable
 
-== Note
-
-This library forked from below projects.
-
-* https://github.com/kachick/structus
-* https://github.com/kachick/striuct
-
 == License
 
-Copyright (C) 2011-2012  Kenichi Kamiya
+The MIT X License
 
-The MIT/X11 License (See the file LICENSE.)
+Copyright (C) 2011-2012 Kenichi Kamiya
+
+See the file LICENSE for further details.
+
