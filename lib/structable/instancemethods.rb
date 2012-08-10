@@ -1,188 +1,193 @@
 require 'forwardable'
 
-module Structable::InstanceMethods
-  extend Forwardable
+module Structable
 
-  def_delegators :'self.class',
-  :members, :keys, :length, :size,
-  :has_member?, :member?, :has_key?, :key?, :_attrs
+  module InstanceMethods
 
-  private :_attrs
-  
-  def_delegators :@_db, :hash, :has_value?, :value?, :empty?
+    extend Forwardable
 
-  def each_member(&block)
-    return to_enum(__method__) unless block_given?
-    self.class.each_member(&block)
-    self
-  end
-  
-  alias_method :each_key, :each_member
+    def_delegators :'self.class',
+    :members, :keys, :length, :size,
+    :has_member?, :member?, :has_key?, :key?, :_attrs
 
-  def initialize(*values)
-    @_db, @_locks = {}, {}
-    _replace_values(*values)
-  end
+    private :_attrs
+    
+    def_delegators :@_db, :hash, :has_value?, :value?, :empty?
 
-  def values
-    members.map{|name|@_db[name]}
-  end
+    def each_member(&block)
+      return to_enum(__method__) unless block_given?
+      self.class.each_member(&block)
+      self
+    end
+    
+    alias_method :each_key, :each_member
 
-  alias_method :to_a, :values
+    def initialize(*values)
+      @_db, @_locks = {}, {}
+      _replace_values(*values)
+    end
 
-  # @return [Boolean]
-  def ==(other)
-    _compare other, :==
-  end
+    def values
+      members.map{|name|@_db[name]}
+    end
 
-  alias_method :===, :==
-  
-  def eql?(other)
-    _compare other, :eql?
-  end
+    alias_method :to_a, :values
 
-   # @return [String]
-  def inspect
-    "#<#{self.class} (Structable)".tap {|s|
-      each_pair do |name, value|
-        suffix = (has_default?(name) && default?(name)) ? '(default)' : nil
-        s << " #{name}=#{value.inspect}#{suffix}"
-      end
-      
-      s << ">"
-    }
-  end
+    # @return [Boolean]
+    def ==(other)
+      _compare other, :==
+    end
 
-  # @return [String]
-  def to_s
-    "#<structable #{self.class}".tap {|s|
-      each_pair do |name, value|
-        s << " #{name}=#{value.inspect}"
-      end
-      
-      s << '>'
-    }
-  end
+    alias_method :===, :==
+    
+    def eql?(other)
+      _compare other, :eql?
+    end
 
-  alias_method :to_a, :values
-
-  # @return [Hash]
-  def to_h(reject_no_assign=false)
-    return @_db.dup if reject_no_assign
-
-    {}.tap {|h|
-      each_pair do |key, value|
-        h[key] = value
-      end
-    }
-  end
-
-  # @param [Fixnum, Range] *keys
-  # @return [Array]
-  def values_at(*_keys)
-    [].tap {|r|
-      _keys.each do |key|
-        case key
-        when Fixnum
-          r << self[key]
-        when Range
-          key.each do |n|
-            raise TypeError unless n.instance_of? Fixnum
-            r << self[n]
-          end
-        else
-          raise TypeError
+     # @return [String]
+    def inspect
+      "#<#{self.class} (Structable)".tap {|s|
+        each_pair do |name, value|
+          suffix = (has_default?(name) && default?(name)) ? '(default)' : nil
+          s << " #{name}=#{value.inspect}#{suffix}"
         end
+        
+        s << ">"
+      }
+    end
+
+    # @return [String]
+    def to_s
+      "#<structable #{self.class}".tap {|s|
+        each_pair do |name, value|
+          s << " #{name}=#{value.inspect}"
+        end
+        
+        s << '>'
+      }
+    end
+
+    alias_method :to_a, :values
+
+    # @return [Hash]
+    def to_h(reject_no_assign=false)
+      return @_db.dup if reject_no_assign
+
+      {}.tap {|h|
+        each_pair do |key, value|
+          h[key] = value
+        end
+      }
+    end
+
+    # @param [Fixnum, Range] *keys
+    # @return [Array]
+    def values_at(*_keys)
+      [].tap {|r|
+        _keys.each do |key|
+          case key
+          when Fixnum
+            r << self[key]
+          when Range
+            key.each do |n|
+              raise TypeError unless n.instance_of? Fixnum
+              r << self[n]
+            end
+          else
+            raise TypeError
+          end
+        end
+      }
+    end
+
+    # @param [Symbol, String, Fixnum] key
+    def [](key)
+      _subscript(key) {|name|_get! name}
+    end
+    
+    # @param [Symbol, String, Fixnum] key
+    # @param [Object] value
+    # @return [value]
+    def []=(key, value)
+      _subscript(key) {|name|_set! name, value}
+    end
+
+    def freeze
+      close
+      super
+    end
+
+    def each_value
+      return to_enum(__method__) unless block_given?
+      each_member{|name|yield self[name]}
+    end
+
+    alias_method :each, :each_value
+
+    def each_pair
+      return to_enum(__method__) unless block_given?
+      each_member{|name|yield name, self[name]}
+      self
+    end
+    
+    private
+    
+    def initialize_copy(original)
+      @_db, @_locks = @_db.dup, {}
+    end
+
+    def close
+      [@_db, @_locks].each(&:freeze).freeze
+      self
+    end
+
+    def _get!(name)
+      @_db[name]
+    end
+
+    def _set!(name, value)
+      raise "can't modify frozen #{self.class}" if frozen?
+
+      @_db[name] = value
+    end
+
+    def _replace_values(*values)
+      unless values.size <= size
+        raise ArgumentError, "struct size differs (max: #{size})"
       end
-    }
-  end
 
-  # @param [Symbol, String, Fixnum] key
-  def [](key)
-    _subscript(key) {|name|_get! name}
-  end
-  
-  # @param [Symbol, String, Fixnum] key
-  # @param [Object] value
-  # @return [value]
-  def []=(key, value)
-    _subscript(key) {|name|_set! name, value}
-  end
-
-  def freeze
-    close
-    super
-  end
-
-  def each_value
-    return to_enum(__method__) unless block_given?
-    each_member{|name|yield self[name]}
-  end
-
-  alias_method :each, :each_value
-
-  def each_pair
-    return to_enum(__method__) unless block_given?
-    each_member{|name|yield name, self[name]}
-    self
-  end
-  
-  private
-  
-  def initialize_copy(original)
-    @_db, @_locks = @_db.dup, {}
-  end
-
-  def close
-    [@_db, @_locks].each(&:freeze).freeze
-    self
-  end
-
-  def _get!(name)
-    @_db[name]
-  end
-
-  def _set!(name, value)
-    raise "can't modify frozen #{self.class}" if frozen?
-
-    @_db[name] = value
-  end
-
-  def _replace_values(*values)
-    unless values.size <= size
-      raise ArgumentError, "struct size differs (max: #{size})"
+      values.each_with_index do |value, index|
+        self[index] = value
+      end
     end
 
-    values.each_with_index do |value, index|
-      self[index] = value
+    # @param [Symbol] method
+    def _compare(other, method)
+      instance_of?(other.class) && \
+      each_pair.all?{|k, v|v.__send__ method, other[k]}
     end
-  end
 
-  # @param [Symbol] method
-  def _compare(other, method)
-    instance_of?(other.class) && \
-    each_pair.all?{|k, v|v.__send__ method, other[k]}
-  end
-
-  def _subscript(key)
-    case key
-    when Symbol, String
-      key = key.to_sym
-      if _attrs.has_key? key
-        attrs = _attrs[key]
-        yield attrs.kind_of?(Symbol) ? attrs : key
+    def _subscript(key)
+      case key
+      when Symbol, String
+        key = key.to_sym
+        if _attrs.has_key? key
+          attrs = _attrs[key]
+          yield attrs.kind_of?(Symbol) ? attrs : key
+        else
+          raise NameError
+        end
+      when Fixnum
+        if name = members[key]
+          yield name
+        else
+          raise IndexError
+        end
       else
-        raise NameError
+        raise ArgumentError
       end
-    when Fixnum
-      if name = members[key]
-        yield name
-      else
-        raise IndexError
-      end
-    else
-      raise ArgumentError
     end
+
   end
 
 end
