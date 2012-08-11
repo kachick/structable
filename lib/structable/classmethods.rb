@@ -98,7 +98,9 @@ module Structable
     # @return [nil]
     def member(name)
       name = name.to_sym
-      raise NameError, 'Already defined' if _attrs.has_key? name
+      if _attrs.has_key? name
+        raise NameError, "Already defined the member '#{name}'" 
+      end
       
       define_method name do
         _get! name
@@ -115,6 +117,10 @@ module Structable
 
     def _attrs(name=nil)
       name ? self::MEMBER_DEFINES[autonym name] : self::MEMBER_DEFINES
+    end
+    
+    def assert_member(name)
+      raise NameError, "Unknown member '#{name}'" unless member?(name)
     end
 
     def inherited(subclass)

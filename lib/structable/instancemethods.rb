@@ -8,9 +8,9 @@ module Structable
 
     def_delegators :'self.class',
       :members, :keys, :length, :size,
-      :has_member?, :member?, :has_key?, :key?, :_attrs
+      :has_member?, :member?, :has_key?, :key?, :_attrs, :assert_member
 
-    private :_attrs
+    private :_attrs, :assert_member
     
     def_delegators :@_db, :hash, :has_value?, :value?, :empty?
 
@@ -144,6 +144,23 @@ module Structable
       self
     end
     
+    # @param [Symbol, String] name
+    # @return [self]
+    def lock(name)
+      name = name.to_sym
+      assert_member name
+      
+      @_locks[name] = true
+      self
+    end
+    
+    # @param [Symbol, String] name
+    def locked?(name)
+      name = name.to_sym
+      
+      @_locks.has_key?(name)
+    end
+    
     private
     
     def initialize_copy(original)
@@ -161,6 +178,7 @@ module Structable
 
     def _set!(name, value)
       raise "can't modify frozen #{self.class}" if frozen?
+      raise "can't modify locked member '#{name}'" if locked? name
 
       @_db[name] = value
     end
