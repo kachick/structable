@@ -84,7 +84,7 @@ module Structable
       }
     end
 
-    # @param [Fixnum, Range] *keys
+    # @param [Fixnum, Range] _keys
     # @return [Array]
     def values_at(*_keys)
       [].tap {|r|

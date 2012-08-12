@@ -77,7 +77,7 @@ module Structable
       _members.reject{|k, v|v.kind_of? Symbol}.keys
     end
     
-    # @return [Hash<Symbol => Symbol>] {aliased_key => original_key}
+    # @return [Hash] aliased_key => original_key
     def aliases
       _members.select{|k, v|v.kind_of? Symbol}
     end
