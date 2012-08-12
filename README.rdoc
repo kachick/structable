@@ -46,7 +46,7 @@ Provide APIs looks like "Struct"
 
 == Installation
 
-* gem install structable
+    gem install structable
 
 == License
 
