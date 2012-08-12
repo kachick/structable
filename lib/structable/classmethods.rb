@@ -28,7 +28,12 @@ module Structable
     # @param [Boolean] include_aliased
     # @return [Array<Symbol>]
     def members(include_aliased=false)
-      (include_aliased ? _members : _members.reject{|k, v|v.kind_of? Symbol}).keys
+      include_aliased ? all_members : autonyms
+    end
+    
+    # @return [Array<Symbol>]
+    def all_members
+      _members.keys
     end
 
     alias_method :keys, :members
@@ -59,11 +64,17 @@ module Structable
     # @return [Symbol] identifier symbol
     def autonym(name)
       name = name.to_sym
-      if _members.has_key? name
-        (linked = _members[name]).kind_of?(Symbol) ? linked : name
+      
+      if autonyms.include?(name)
+        name
       else
-        raise NameError
+        aliases[name] || raise(NameError)
       end
+    end
+    
+    # @return [Array<Symbol>] original keys
+    def autonyms
+      _members.reject{|k, v|v.kind_of? Symbol}.keys
     end
     
     # @return [Hash<Symbol => Symbol>] {aliased_key => original_key}
