@@ -42,8 +42,13 @@ module Structable
     alias_method :has_key?, :has_member?
     alias_method :key?, :has_member?
 
+    # @param [Symbol, String] aliased
+    # @param [Symbol, String] original
     # @return [self] to be accessible via other name
     def alias_member(aliased, original)
+      aliased, original = aliased.to_sym, original.to_sym
+      raise "Already defined the alias '#{aliased}'" if _attrs[aliased]
+
       _attrs[aliased] = original
 
       alias_method aliased, original
