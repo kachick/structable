@@ -28,7 +28,7 @@ module Structable
     # @param [Boolean] include_aliased
     # @return [Array<Symbol>]
     def members(include_aliased=false)
-      (aliased ? _attrs : _attrs.reject{|k, v|v.kind_of? Symbol}).keys
+      (include_aliased ? _attrs : _attrs.reject{|k, v|v.kind_of? Symbol}).keys
     end
 
     alias_method :keys, :members
