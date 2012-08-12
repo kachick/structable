@@ -13,7 +13,7 @@ class TestStructableFreeze < Test::Unit::TestCase
     sth.freeze
     
     assert_raises RuntimeError do
-     sth.foo = 8
+      sth.foo = 8
     end
    
     assert_equal true, sth.frozen?
@@ -30,10 +30,25 @@ class TestStructableLoadPairs < Test::Unit::TestCase
     member :hoge
   end
   
-  def test_load_pairs
-    sth = Sth.load_pairs hoge: 7, foo: 8
+  def test_for_pairs
+    sth = Sth.for_pairs hoge: 7, foo: 8
     assert_equal [8, nil, 7], [sth.foo, sth.bar, sth.hoge]
     assert_equal [8, nil, 7], sth.values
+  end
+  
+  def test_lock
+    sth = Sth.new
+    sth.lock :foo
+    
+    assert_raises RuntimeError do
+      sth.foo = 8
+    end
+    
+    sth.bar = 8
+   
+    assert_equal true, sth.locked?(:foo)
+    assert_equal false, sth.locked?(:bar)
+    assert_equal false, sth.locked?(:hoge)
   end
 end
 
