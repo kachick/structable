@@ -25,10 +25,10 @@ module Structable
     
     alias_method :each_key, :each_member
   
-    # @param [Boolean] aliased
+    # @param [Boolean] include_aliased
     # @return [Array<Symbol>]
-    def members(aliased=false)
-      (aliased ? _attrs : _attrs.select{|k, v|v.respond_to? :each_pair}).keys
+    def members(include_aliased=false)
+      (aliased ? _attrs : _attrs.reject{|k, v|v.kind_of? Symbol}).keys
     end
 
     alias_method :keys, :members
