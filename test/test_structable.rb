@@ -166,3 +166,23 @@ class TestStructableEnum < Test::Unit::TestCase
     end
   end
 end
+
+# @todo
+class TestStructableClassdup < Test::Unit::TestCase
+  class Sth
+    include Structable
+    
+    member :foo
+  end
+  
+  Sth2 = Sth.dup
+  
+  class Sth2
+    member :bar
+  end
+
+  def test_classdup
+    assert_equal [:foo], Sth.members
+    assert_equal [:foo, :bar], Sth2.members
+  end
+end

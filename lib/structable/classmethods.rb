@@ -113,7 +113,7 @@ module Structable
     end
 
     private
-    
+
     # @param [Symbol, String] name
     # @return [nil]
     def member(name)
