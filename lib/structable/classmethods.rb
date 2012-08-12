@@ -8,7 +8,7 @@ module Structable
     
     # @return [Integer]
     def length
-      _attrs.length
+      _members.length
     end
 
     alias_method :size, :length
@@ -19,7 +19,7 @@ module Structable
     # @return [Enumerator]
     def each_member(&block)      
       return to_enum(__method__) unless block_given?
-      _attrs.each_key(&block)
+      _members.each_key(&block)
       self
     end
     
@@ -28,14 +28,14 @@ module Structable
     # @param [Boolean] include_aliased
     # @return [Array<Symbol>]
     def members(include_aliased=false)
-      (include_aliased ? _attrs : _attrs.reject{|k, v|v.kind_of? Symbol}).keys
+      (include_aliased ? _members : _members.reject{|k, v|v.kind_of? Symbol}).keys
     end
 
     alias_method :keys, :members
 
     # @param [Symbol, String] name
     def has_member?(name)
-      _attrs.has_key? name
+      _members.has_key? name
     end
 
     alias_method :member?, :has_member?
@@ -47,9 +47,9 @@ module Structable
     # @return [self] to be accessible via other name
     def alias_member(aliased, original)
       aliased, original = aliased.to_sym, original.to_sym
-      raise "Already defined the alias '#{aliased}'" if _attrs[aliased]
+      raise "Already defined the alias '#{aliased}'" if _members[aliased]
 
-      _attrs[aliased] = original
+      _members[aliased] = original
 
       alias_method aliased, original
       alias_method :"#{aliased}=", :"#{original}="
@@ -59,8 +59,8 @@ module Structable
     # @return [Symbol] identifier symbol
     def autonym(name)
       name = name.to_sym
-      if _attrs.has_key? name
-        (linked = _attrs[name]).kind_of?(Symbol) ? linked : name
+      if _members.has_key? name
+        (linked = _members[name]).kind_of?(Symbol) ? linked : name
       else
         raise NameError
       end
@@ -68,7 +68,7 @@ module Structable
     
     # @return [Hash<Symbol => Symbol>] {aliased_key => original_key}
     def aliases
-      _attrs.select{|k, v|v.kind_of? Symbol}
+      _members.select{|k, v|v.kind_of? Symbol}
     end
     
     # @group Constructor
@@ -107,7 +107,7 @@ module Structable
     # @return [nil]
     def member(name)
       name = name.to_sym
-      if _attrs.has_key? name
+      if _members.has_key? name
         raise NameError, "Already defined the member '#{name}'" 
       end
       
@@ -119,13 +119,13 @@ module Structable
         _set! name, value
       end
       
-      _attrs[name] = {}
+      _members[name] = {}
 
       nil
     end
 
-    def _attrs(name=nil)
-      name ? self::MEMBER_DEFINES[autonym name] : self::MEMBER_DEFINES
+    def _members
+      self::Structable_MEMBERS
     end
     
     def assert_member(name)
@@ -133,12 +133,9 @@ module Structable
     end
 
     def inherited(subclass)
-      eigen = self
       super subclass
       
-      subclass.module_eval do
-        const_set :MEMBER_DEFINES, eigen::MEMBER_DEFINES.dup
-      end
+      subclass.const_set :Structable_MEMBERS, _members.dup
     end
   
   end

@@ -8,9 +8,9 @@ module Structable
 
     def_delegators :'self.class',
       :members, :keys, :length, :size,
-      :has_member?, :member?, :has_key?, :key?, :_attrs, :assert_member
+      :has_member?, :member?, :has_key?, :key?, :_members, :assert_member
 
-    private :_attrs, :assert_member
+    private :_members, :assert_member
     
     def_delegators :@_db, :hash, :has_value?, :value?, :empty?
 
@@ -193,20 +193,13 @@ module Structable
 
     # @param [Symbol] method
     def _compare(other, method)
-      instance_of?(other.class) &&
-        values.__send__(method, other.values)
+      instance_of?(other.class) && values.__send__(method, other.values)
     end
 
     def _subscript(key)
       case key
       when Symbol, String
-        key = key.to_sym
-        if _attrs.has_key? key
-          attrs = _attrs[key]
-          yield attrs.kind_of?(Symbol) ? attrs : key
-        else
-          raise NameError
-        end
+        yield self.class.autonym(key)
       when Fixnum
         if name = members[key]
           yield name

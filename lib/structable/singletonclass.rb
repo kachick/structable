@@ -11,12 +11,12 @@ module Structable
         if eigen.equal? ::Structable
           extend  ::Structable::ClassMethods
           include ::Structable::InstanceMethods
-          attrs = {}
+          _members = {}
         else
-          attrs = eigen::MEMBER_DEFINES.dup
+          _members = eigen::Structable_MEMBERS.dup
         end
 
-        const_set :MEMBER_DEFINES, attrs
+        const_set :Structable_MEMBERS, _members
       end
     end
 
