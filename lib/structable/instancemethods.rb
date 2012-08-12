@@ -72,8 +72,6 @@ module Structable
       }
     end
 
-    alias_method :to_a, :values
-
     # @param [Boolean] reject_no_assign
     # @return [Hash]
     def to_h(reject_no_assign=false)
