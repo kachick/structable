@@ -193,8 +193,8 @@ module Structable
 
     # @param [Symbol] method
     def _compare(other, method)
-      instance_of?(other.class) && \
-      each_pair.all?{|k, v|v.__send__ method, other[k]}
+      instance_of?(other.class) &&
+        values.__send__(method, other.values)
     end
 
     def _subscript(key)
