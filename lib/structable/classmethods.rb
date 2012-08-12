@@ -45,7 +45,6 @@ module Structable
     # @return [self] to be accessible via other name
     def alias_member(aliased, original)
       _attrs[aliased] = original
-     (_attrs(original)[:aliases] ||= []) << aliased
 
       alias_method aliased, original
       alias_method :"#{aliased}=", :"#{original}="
