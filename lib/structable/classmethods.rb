@@ -62,6 +62,11 @@ module Structable
       end
     end
     
+    # @return [Hash<Symbol => Symbol>] {aliased_key => original_key}
+    def aliases
+      _attrs.select{|k, v|v.kind_of? Symbol}
+    end
+    
     # @group Constructor
     
     def_delegator :self, :new, :[]

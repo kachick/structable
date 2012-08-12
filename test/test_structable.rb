@@ -101,6 +101,8 @@ class TestStructableAliasMember < Test::Unit::TestCase
         member :abc
       end
     end
+    
+    assert_equal({:abc => :bar}, Sth.aliases)
   end
 end
 
