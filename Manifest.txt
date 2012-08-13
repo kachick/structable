@@ -10,4 +10,5 @@ lib/structable/singletonclass.rb
 lib/structable/version.rb
 test/test_helper.rb
 test/test_structable.rb
+declared/declared.rb
 examples/README.rb

@@ -19,7 +19,7 @@ module Structable
     # @return [Enumerator]
     def each_member(&block)      
       return to_enum(__method__) unless block_given?
-      _members.each_key(&block)
+      autonyms.each(&block)
       self
     end
     

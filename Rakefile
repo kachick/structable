@@ -9,6 +9,7 @@ $hoe = Hoe.spec 'structable' do
   self.rubyforge_name       = name
   require_ruby_version '>= 1.9.2'
   dependency 'yard', '~> 0.8.2.1', :development
+  dependency 'declare', '~> 0.0.4', :development
 end
 
 require 'newgem/tasks'

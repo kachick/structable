@@ -53,8 +53,7 @@ module Structable
     def inspect
       "#<#{self.class} (Structable)".tap {|s|
         each_pair do |name, value|
-          suffix = (has_default?(name) && default?(name)) ? '(default)' : nil
-          s << " #{name}=#{value.inspect}#{suffix}"
+          s << " #{name}=#{value.inspect}"
         end
         
         s << ">"

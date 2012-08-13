@@ -16,8 +16,9 @@ class Tea < Drink
 end
 
 tea = Tea.new :bitter, :green
+p tea                                  #=> #<Tea (Structable) taste=:bitter leaf=:green>
 p tea.members                          #=> [:taste, :leaf]
-p tea.members(true)                   #=> [:taste, :leaf, :type]
+p tea.members(true)                    #=> [:taste, :leaf, :type]
 p tea.member? :type                    #=> true
 tea.type = 'Special Flavor'
 p tea.taste                            #=> :bitter
