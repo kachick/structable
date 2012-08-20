@@ -5,7 +5,7 @@ require File.expand_path('../lib/structable/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ['Kenichi Kamiya']
   gem.email         = ['kachick1+ruby@gmail.com']
-  gem.description   = %q{Provide "Struct" like API}
+  gem.description   = %q{Provide API, looks "Struct"}
   gem.summary       = %q{Member aliasing, Inheritable}
   gem.homepage      = 'https://github.com/kachick/structable'
 
