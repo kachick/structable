@@ -3,6 +3,7 @@ LICENSE
 History.rdoc
 Manifest.txt
 Rakefile
+Gemfile
 lib/structable.rb
 lib/structable/classmethods.rb
 lib/structable/instancemethods.rb
