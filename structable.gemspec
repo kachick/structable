@@ -16,3 +16,4 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
   gem.version       = Structable::VERSION.dup # dup for https://github.com/rubygems/rubygems/commit/48f1d869510dcd325d6566df7d0147a086905380#-P0
 end
+

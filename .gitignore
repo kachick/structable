@@ -29,4 +29,4 @@ doc/
 .redcar
 
 # other
-.lock
+*.lock
