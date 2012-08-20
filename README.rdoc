@@ -1,11 +1,8 @@
 = Structable
 
-code :: https://github.com/kachick/structable
-bugs :: https://github.com/kachick/structable/issues
-
 == Description
 
-Provide APIs looks like "Struct"
+Provide API, looks "Struct"
 
 == Features
 
@@ -47,6 +44,14 @@ Provide APIs looks like "Struct"
 == Installation
 
     gem install structable
+
+== Links
+
+code   :: https://github.com/kachick/structable
+issues :: https://github.com/kachick/structable/issues
+CI     :: http://travis-ci.org/#!/kachick/structable
+gem    :: https://rubygems.org/gems/structable
+gem+   :: http://metagem.info/gems/structable
 
 == License
 
