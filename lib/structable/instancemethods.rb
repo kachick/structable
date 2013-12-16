@@ -1,3 +1,5 @@
+# coding: us-ascii
+
 require 'forwardable'
 
 module Structable

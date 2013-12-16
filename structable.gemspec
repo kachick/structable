@@ -1,3 +1,5 @@
+# coding: us-ascii
+
 # I don't know why dose occur errors below.
 #  require_relative 'lib/structable/version'
 require File.expand_path('../lib/structable/version', __FILE__)

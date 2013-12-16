@@ -1,4 +1,5 @@
 #!/usr/local/bin/ruby -w
+# coding: us-ascii
 
 $VERBOSE = true
 
