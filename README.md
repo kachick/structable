@@ -16,13 +16,13 @@ Features
 Usage
 -----
 
-### Setup
+Setup
 
 ```ruby
 require 'structable'
 ```
 
-### Overview
+Overview
 
 ```ruby
 class Drink
@@ -57,7 +57,8 @@ Installation
 $ gem install structable
 ```
 
-== Links
+Links
+-----
 
 * [Home](http://kachick.github.com/structable)
 * [code](https://github.com/kachick/structable)
@@ -66,7 +67,8 @@ $ gem install structable
 * [CI](http://travis-ci.org/#!/kachick/structable)
 * [gem](https://rubygems.org/gems/structable)
 
-== License
+License
+-----
 
 The MIT X11 License  
 Copyright (C) 2011-2012 Kenichi Kamiya  
