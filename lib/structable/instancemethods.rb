@@ -201,7 +201,7 @@ module Structable
       case key
       when Symbol, String
         yield self.class.autonym(key)
-      when Fixnum
+      when Integer
         if name = members[key]
           yield name
         else

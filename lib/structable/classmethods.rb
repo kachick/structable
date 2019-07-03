@@ -114,6 +114,10 @@ module Structable
       super
     end
 
+    def assert_member(name)
+      raise NameError, "Unknown member '#{name}'" unless member?(name)
+    end
+
     private
 
     # @param [Symbol, String] name
@@ -139,10 +143,6 @@ module Structable
 
     def _members
       self::Structable_MEMBERS
-    end
-    
-    def assert_member(name)
-      raise NameError, "Unknown member '#{name}'" unless member?(name)
     end
 
     def inherited(subclass)
