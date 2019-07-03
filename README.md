@@ -48,7 +48,7 @@ tea.leaf                       #=> 'Special Flavor'
 Requirements
 -----
 
-* [Ruby 1.9.3 or later](http://travis-ci.org/#!/kachick/structable)
+* [Ruby 2.5 or later](http://travis-ci.org/#!/kachick/structable)
 
 Installation
 -----
