@@ -1,8 +1,9 @@
 structable
 =================
 
-[![Build Status](https://secure.travis-ci.org/kachick/structable.png)](http://travis-ci.org/kachick/structable)
-[![Gem Version](https://badge.fury.io/rb/structable.png)](http://badge.fury.io/rb/structable)
+* ***This repository is archived***
+* ***No longer maintained***
+* ***All versions have been yanked from https://rubygems.org for releasing valuable namespace for others***
 
 "Struct" like APIs
 
@@ -48,24 +49,7 @@ tea.leaf                       #=> 'Special Flavor'
 Requirements
 -----
 
-* [Ruby 2.5 or later](http://travis-ci.org/#!/kachick/structable)
-
-Installation
------
-
-```bash
-$ gem install structable
-```
-
-Links
------
-
-* [Home](http://kachick.github.com/structable)
-* [code](https://github.com/kachick/structable)
-* [API](http://kachick.github.com/structable/yard/frames.html)
-* [issues](https://github.com/kachick/structable/issues)
-* [CI](http://travis-ci.org/#!/kachick/structable)
-* [gem](https://rubygems.org/gems/structable)
+* Ruby 2.5 or later
 
 License
 -----
